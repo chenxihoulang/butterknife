@@ -1,0 +1,70 @@
+apply plugin: 'com.android.application'
+
+android {
+  compileSdkVersion versions.compileSdk
+
+  compileOptions {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+  }
+
+  defaultConfig {
+    applicationId 'com.example.butterknife'
+    minSdkVersion versions.minSdk
+    targetSdkVersion versions.compileSdk
+    versionCode 1
+    versionName '1.0.0'
+
+    testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+  }
+
+  lintOptions {
+    textReport true
+    textOutput "stdout"
+    checkAllWarnings true
+    warningsAsErrors true
+    disable 'UnknownNullness'
+    showAll true
+    explainIssues true
+    // We run a full lint analysis as build part in CI, so skip vital checks for assemble tasks.
+    checkReleaseBuilds false
+  }
+
+  buildTypes {
+    debug {
+      minifyEnabled true
+      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'src/main/proguard.pro'
+      testProguardFile 'src/androidTest/proguard.pro'
+    }
+  }
+
+  productFlavors {
+    flavorDimensions 'runtime'
+
+    reflect {
+      dimension 'runtime'
+    }
+    codegen {
+      dimension 'runtime'
+    }
+  }
+
+  testOptions {
+    unitTests {
+      includeAndroidResources = true
+    }
+  }
+}
+
+dependencies {
+  reflectImplementation project(':butterknife-reflect')
+
+  codegenImplementation project(':butterknife')
+  codegenAnnotationProcessor project(':butterknife-compiler')
+  androidTestCodegenAnnotationProcessor project(':butterknife-compiler')
+
+  androidTestImplementation deps.junit
+  androidTestImplementation deps.truth
+  androidTestImplementation deps.androidx.test.runner
+  androidTestImplementation deps.androidx.test.rules
+}

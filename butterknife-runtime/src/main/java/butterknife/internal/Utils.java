@@ -69,6 +69,15 @@ public final class Utils {
     return new ImmutableList<>(arrayFilteringNull(views));
   }
 
+  /**
+   *
+   * @param source 根view,用于根据id查找view
+   * @param id 资源id
+   * @param who 描述字符串
+   * @param cls 字段类型
+   * @param <T>
+   * @return
+   */
   public static <T> T findOptionalViewAsType(View source, @IdRes int id, String who,
       Class<T> cls) {
     View view = source.findViewById(id);
@@ -97,6 +106,15 @@ public final class Utils {
     return castView(view, id, who, cls);
   }
 
+  /**
+   * 类型转换
+   * @param view
+   * @param id
+   * @param who
+   * @param cls
+   * @param <T>
+   * @return
+   */
   public static <T> T castView(View view, @IdRes int id, String who, Class<T> cls) {
     try {
       return cls.cast(view);
